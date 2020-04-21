@@ -34,7 +34,7 @@ def clean_data(df):
     
     for column in categories:
         categories[column] = categories[column].apply(lambda str_: str_[-1])
-        categories[column] = categories[column].astype(str)
+        categories[column] = categories[column].astype(int)
     
     df.drop(columns='categories', inplace=True)
     
@@ -49,7 +49,7 @@ def clean_data(df):
 def save_data(df, database_filename):
      # load to database
     engine = create_engine('sqlite:///' + database_filename)
-    df.to_sql(database_filename, engine, index=False, if_exists='replace')  
+    df.to_sql('DisasterResponseData', engine, index=False, if_exists='replace')  
 
 
 def main():
