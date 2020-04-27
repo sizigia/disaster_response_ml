@@ -2,8 +2,12 @@ import json
 import plotly
 import pandas as pd
 
+import nltk
+nltk.download(['averaged_perceptron_tagger', 'wordnet'])
+from nltk import pos_tag
+from nltk.tokenize import RegexpTokenizer
 from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
 
 from flask import Flask
 from flask import render_template, request, jsonify
@@ -15,19 +19,41 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
-    tokens = word_tokenize(text)
+    """
+    Transforms a text to clean tokens, where every token is a word converted to lower case,
+    passed to a part-of-speech tagger and lemmatized accordingly.
+    Words recognized as stopwords are ommitted.
+    
+    Input:
+        text (str)
+        
+    Output:
+        clean_tokens (list): list of clean tokens (words converted to lower case and lemmatized)
+        
+    """
+    
+    tokenizer = RegexpTokenizer('\w+')
     lemmatizer = WordNetLemmatizer()
 
+    tokens = tokenizer.tokenize(text.lower())
+    
     clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
-
+    
+    for word, tag in pos_tag(tokens):
+        if tag[0] in ['A', 'R', 'N', 'V']:
+            tag = tag[0].lower()
+            clean_token = lemmatizer.lemmatize(word, pos=tag)
+        else:
+            clean_token = word
+            
+        if clean_token not in stopwords.words('english'):
+            clean_tokens.append(clean_token)
+        
     return clean_tokens
 
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
-df = pd.read_sql_table('DisasterResponse.db', engine)
+df = pd.read_sql_table('DisasterResponseData', engine)
 
 # load model
 model = joblib.load("../models/classifier.pkl")
