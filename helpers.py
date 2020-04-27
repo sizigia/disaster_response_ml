@@ -1,5 +1,6 @@
 import numpy as np
 import itertools
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
 def batch_processing(model=None, X_subset=None, Y_subset=None, n_batches = 101):
     """
