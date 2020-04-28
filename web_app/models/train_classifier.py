@@ -129,6 +129,10 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
+    """
+    Takes in the trained model and a path where to store it.
+    Dumps the model in a pickle to reuse it later.
+    """
     with open(model_filepath, 'wb') as f:
         pickle.dump(model, f)
 
