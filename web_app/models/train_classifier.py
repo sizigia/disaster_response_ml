@@ -1,24 +1,22 @@
-
-import sys
-import nltk
-nltk.download(['averaged_perceptron_tagger', 'wordnet'])
-from nltk import pos_tag
-from nltk.tokenize import RegexpTokenizer
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords
-
-import numpy as np
-import pandas as pd
 import pickle
 import re
+import sys
 
-from sqlalchemy import create_engine
-
-from sklearn.pipeline import Pipeline
-from sklearn.model_selection import train_test_split
+import nltk
+import numpy as np
+import pandas as pd
+from nltk import pos_tag
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import RegexpTokenizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
+from sklearn.pipeline import Pipeline
+from sqlalchemy import create_engine
+
+nltk.download(['averaged_perceptron_tagger', 'wordnet'])
 
 
 def load_data(database_filepath):
