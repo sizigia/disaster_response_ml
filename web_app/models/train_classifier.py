@@ -20,9 +20,13 @@ nltk.download(['averaged_perceptron_tagger', 'wordnet'])
 
 
 def load_data(database_filepath):
+    """
+    Creates an Engine instance with the path provided, and reads the SQL table that stores the cleaned data.
+    Returns features, labels and category names for the dataset.
+    """
     engine = create_engine('sqlite:///' + database_filepath)
     
-    df = pd.read_sql_table(database_filepath, engine)
+    df = pd.read_sql_table('DisasterResponseData', engine)
     
     X = df['message']
     y = df[df.columns[-36:]]
