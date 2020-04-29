@@ -39,7 +39,7 @@ def tokenize(text):
     """
     Transforms a text to clean tokens, where every token is a word converted to lower case,
     passed to a part-of-speech tagger and lemmatized accordingly.
-    Words recognized as stopwords are ommitted.
+    Words recognized as stopwords are omitted.
     
     Input:
         text (str)
