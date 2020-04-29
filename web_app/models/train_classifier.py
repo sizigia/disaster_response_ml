@@ -13,10 +13,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 from sklearn.pipeline import Pipeline
 from sqlalchemy import create_engine
 
-nltk.download(['averaged_perceptron_tagger', 'wordnet'])
+nltk.download(['averaged_perceptron_tagger', 'wordnet', 'stopwords'])
 
 
 def load_data(database_filepath):
@@ -123,9 +124,9 @@ def evaluate_model(model, X_test, Y_test, category_names):
                                                                                  f1_score(*set_Y_pair, average=avg))
         print(rep_col)
         
-    print('Accuracy Score: {:.2f}%'.format(np.mean(Y_pred.values == Y_pred)))
+    print('Accuracy Score: {:.2f}%'.format(np.mean(Y_test.values == Y_pred)))
 
-    return np.mean(Y_pred.values == Y_pred)
+    return np.mean(Y_test.values == Y_pred)
 
 
 def save_model(model, model_filepath):
